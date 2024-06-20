@@ -6,3 +6,4 @@ matplotlib
 Pillow
 beautifulsoup4
 requests
+webdriver-manager
