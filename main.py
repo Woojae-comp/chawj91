@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 from exchange_module import ex_rate
-# from melon_lyrics import scrape_lyrics
+from melon_lyrics import scrape_lyrics
 
 # 사이드바 화면
 st.sidebar.header("로그인")
@@ -18,9 +18,17 @@ if user_id == 'chawj91' and user_password == '1234':
         st.subheader("환율조회")
         ex_rate()
 
-    # elif your_option == '가사검색':
-    #     st.subheader("가사검색")
-    #     scrape_lyrics()
+    elif your_option == '가사검색':
+        st.subheader("가사검색")
+        singer = st.text_input("가수 이름을 입력하세요:")
+        if st.button("크롤링 시작"):
+            if singer:
+                with st.spinner("크롤링 중... 잠시만 기다려주세요."):
+                    data = scrape_lyrics(singer)
+                    st.success("크롤링 완료!")
+                    st.dataframe(data)
+            else:
+                st.error("가수 이름을 입력하세요.")
 
     elif your_option == '데이터분석':
         pass
