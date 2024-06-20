@@ -86,48 +86,10 @@ def scrape_lyrics(singer):
                     lyrics.append("")  # 가사를 찾을 수 없는 경우 빈 문자열 추가
         
         # 노래 제목과 가사를 데이터프레임에 저장
-        song_data = pd.DataFrame({'노래제목': stitle, '노래가사': lyrics})
+        song_data = pd.DataFrame({'노래제목': stitle, '노래가사': lyrics}, index=range(1, len(stitle) + 1))
     
     finally:
         # 드라이버 종료
         driver.quit()
     
     return song_data
-
-def main():
-    st.title("가수 노래 가사 크롤링")
-    singer = st.text_input("가수 이름을 입력하세요:")
-
-    if st.button("크롤링 시작"):
-        if singer:
-            with st.spinner("크롤링 중... 잠시만 기다려주세요."):
-                data = scrape_lyrics(singer)
-                st.success("크롤링 완료!")
-                st.dataframe(data)
-
-
-                # CSV 데이터 다운로드 버튼
-                csv_data = data.to_csv(index=False).encode('utf-8')
-                st.download_button(
-                    label="CSV 파일 다운로드",
-                    data=csv_data,
-                    file_name="song_data.csv",
-                    mime='text/csv'
-                )
-
-                # Excel 데이터 다운로드 버튼
-                excel_data = BytesIO()
-                with pd.ExcelWriter(excel_data, engine='xlsxwriter') as writer:
-                    data.to_excel(writer, index=False, sheet_name='Sheet1')
-                    writer.save()
-                excel_data.seek(0)
-                st.download_button(
-                    label="Excel 파일 다운로드",
-                    data=excel_data,
-                    file_name="song_data.xlsx",
-                    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                )
-        else:
-            st.error("가수 이름을 입력하세요.")
-if __name__ == "__main__":
-    main()
