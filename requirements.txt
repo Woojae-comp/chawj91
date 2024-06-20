@@ -2,3 +2,7 @@ streamlit
 pandas
 selenium
 openpyxl
+matplotlib
+Pillow
+beautifulsoup4
+requests
